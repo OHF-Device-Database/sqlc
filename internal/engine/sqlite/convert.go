@@ -988,6 +988,17 @@ func (c *cc) convertTablesOrSubquery(n []parser.ITable_or_subqueryContext) []ast
 			tables = append(tables, rv)
 		} else if from.Table_function_name() != nil {
 			rel := from.Table_function_name().GetText()
+			var args ast.List
+			for _, expr := range from.AllExpr() {
+				switch expr.(type) {
+				case *parser.Expr_bindContext:
+					args.Items = append(args.Items, c.convert(expr))
+					continue
+				}
+
+				args.Items = append(args.Items, &ast.TODO{})
+			}
+
 			rf := &ast.RangeFunction{
 				Functions: &ast.List{
 					Items: []ast.Node{
@@ -1000,9 +1011,7 @@ func (c *cc) convertTablesOrSubquery(n []parser.ITable_or_subqueryContext) []ast
 									NewIdentifier(rel),
 								},
 							},
-							Args: &ast.List{
-								Items: []ast.Node{&ast.TODO{}},
-							},
+							Args:     &args,
 							Location: from.GetStart().GetStart(),
 						},
 					},
