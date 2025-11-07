@@ -3,6 +3,7 @@ package sqlite
 import (
 	"fmt"
 	"log"
+	"slices"
 	"strconv"
 	"strings"
 
@@ -836,12 +837,38 @@ func (c *cc) convertReturning_caluseContext(n parser.IReturning_clauseContext) *
 		return list
 	}
 
-	for _, exp := range r.AllExpr() {
-		list.Items = append(list.Items, &ast.ResTarget{
+	var aliases = r.AllColumn_alias()
+
+	// neither `AllColumn_alias` nor `Column_alias` are directly
+	// associated with the numeric index of `AllExpr`
+	// (a, b as "B") → AllExpr[a, b]; AllColumn_alias[B]
+	// → use locations of token to establish association
+	// → iterate over `AllExpr` in reverse, so there's no need for backtracking
+	var exprs = r.AllExpr()
+	slices.Reverse(exprs)
+	for _, exp := range exprs {
+		var item = &ast.ResTarget{
 			Indirection: &ast.List{},
 			Val:         c.convert(exp),
-		})
+		}
+
+		if len(aliases) > 0 {
+			var alias = aliases[len(aliases)-1]
+
+			var expEnd = exp.GetStop().GetStop()
+			var aliasStart = alias.GetStart().GetStart()
+			if expEnd < aliasStart {
+				var name = identifier(alias.GetText())
+				item.Name = &name
+
+				aliases = aliases[:len(aliases)-1]
+			}
+		}
+
+		list.Items = append(list.Items, item)
 	}
+
+	slices.Reverse(list.Items)
 
 	for _, star := range r.AllSTAR() {
 		list.Items = append(list.Items, &ast.ResTarget{
