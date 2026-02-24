@@ -219,8 +219,8 @@ create_virtual_table_stmt:
 ;
 
 with_clause:
-    WITH_ RECURSIVE_? cte_table_name AS_ OPEN_PAR select_stmt CLOSE_PAR (
-        COMMA cte_table_name AS_ OPEN_PAR select_stmt CLOSE_PAR
+    WITH_ RECURSIVE_? cte_table_name AS_ MATERIALIZED_? OPEN_PAR select_stmt CLOSE_PAR (
+        COMMA cte_table_name AS_ MATERIALIZED_? OPEN_PAR select_stmt CLOSE_PAR
     )*
 ;
 
@@ -228,12 +228,8 @@ cte_table_name:
     table_name (OPEN_PAR column_name ( COMMA column_name)* CLOSE_PAR)?
 ;
 
-recursive_cte:
-    cte_table_name AS_ OPEN_PAR initial_select UNION_ ALL_? recursive__select CLOSE_PAR
-;
-
 common_table_expression:
-    table_name (OPEN_PAR column_name ( COMMA column_name)* CLOSE_PAR)? AS_ OPEN_PAR select_stmt CLOSE_PAR
+    table_name (OPEN_PAR column_name ( COMMA column_name)* CLOSE_PAR)? AS_ MATERIALIZED_? OPEN_PAR select_stmt CLOSE_PAR
 ;
 
 returning_clause:
@@ -730,6 +726,7 @@ keyword:
     | LIKE_
     | LIMIT_
     | MATCH_
+    | MATERIALIZED_
     | NATURAL_
     | NO_
     | NOT_

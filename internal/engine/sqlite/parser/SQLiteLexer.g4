@@ -129,6 +129,7 @@ KEY_:               K E Y;
 LEFT_:              L E F T;
 LIKE_:              L I K E;
 LIMIT_:             L I M I T;
+MATERIALIZED_:      M A T E R I A L I Z E D;
 MATCH_:             M A T C H;
 NATURAL_:           N A T U R A L;
 NO_:                N O;
