@@ -89,9 +89,6 @@ type SQLiteParserListener interface {
 	// EnterCte_table_name is called when entering the cte_table_name production.
 	EnterCte_table_name(c *Cte_table_nameContext)
 
-	// EnterRecursive_cte is called when entering the recursive_cte production.
-	EnterRecursive_cte(c *Recursive_cteContext)
-
 	// EnterCommon_table_expression is called when entering the common_table_expression production.
 	EnterCommon_table_expression(c *Common_table_expressionContext)
 
@@ -478,9 +475,6 @@ type SQLiteParserListener interface {
 
 	// ExitCte_table_name is called when exiting the cte_table_name production.
 	ExitCte_table_name(c *Cte_table_nameContext)
-
-	// ExitRecursive_cte is called when exiting the recursive_cte production.
-	ExitRecursive_cte(c *Recursive_cteContext)
 
 	// ExitCommon_table_expression is called when exiting the common_table_expression production.
 	ExitCommon_table_expression(c *Common_table_expressionContext)

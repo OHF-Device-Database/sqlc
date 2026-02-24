@@ -185,12 +185,6 @@ func (s *BaseSQLiteParserListener) EnterCte_table_name(ctx *Cte_table_nameContex
 // ExitCte_table_name is called when production cte_table_name is exited.
 func (s *BaseSQLiteParserListener) ExitCte_table_name(ctx *Cte_table_nameContext) {}
 
-// EnterRecursive_cte is called when production recursive_cte is entered.
-func (s *BaseSQLiteParserListener) EnterRecursive_cte(ctx *Recursive_cteContext) {}
-
-// ExitRecursive_cte is called when production recursive_cte is exited.
-func (s *BaseSQLiteParserListener) ExitRecursive_cte(ctx *Recursive_cteContext) {}
-
 // EnterCommon_table_expression is called when production common_table_expression is entered.
 func (s *BaseSQLiteParserListener) EnterCommon_table_expression(ctx *Common_table_expressionContext) {
 }
