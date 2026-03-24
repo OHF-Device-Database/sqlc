@@ -291,10 +291,6 @@ expr:
         | IS_
         | IS_ NOT_
         | NOT_? IN_
-        | LIKE_
-        | GLOB_
-        | MATCH_
-        | REGEXP_
     ) expr #expr_comparison
     | expr NOT_? IN_ (
         OPEN_PAR (select_stmt | expr ( COMMA expr)*)? CLOSE_PAR
